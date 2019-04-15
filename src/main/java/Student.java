@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Student {
-    int id;
-    String fio;
-    Group group;
-    ArrayList<Integer> marks = new ArrayList<Integer>();
-    ArrayList<Student> studentsList = new ArrayList<Student>();
+    private int id;
+    private String fio;
+    private Group group;
+    private ArrayList<Integer> marks = new ArrayList<Integer>();
 
     // Constructor:
     Student(int id, String fio) {
@@ -16,23 +15,39 @@ public class Student {
         this.fio = fio;
     }
 
-    void newStudent(int id, String fio) {
-        studentsList.add(new Student(id, fio));
+    static void newStudent(int id, String fio) {
+        Deanery.studentsList.add(new Student(id, fio));
     }
 
     void setGroup(Group group) {
         this.group = group;
     }
 
-    void addMark(int id, int mark) {        // Потом переделать
+    int getId(){
+        return this.id;
+    }
+
+    String getFio(){
+        return this.fio;
+    }
+
+    Group getGroup(){
+        return this.group;
+    }
+
+    static void addMark(int id, int mark) {
         int index = findStudent(id);
         if (index == -1) {
             return;
         }
-        studentsList.get(index).marks.add(mark);
+        Deanery.studentsList.get(index).marks.add(mark);
     }
 
-    float getAverageMark(int id) {
+    void addMark(int mark){
+        this.marks.add(mark);
+    }
+
+    static float getAverageMark(int id) {
         int index = findStudent(id);
         if (index == -1) {
             return 0;
@@ -40,18 +55,29 @@ public class Student {
 
         int sum = 0;
         int counter = 0;
-        for (int mark : studentsList.get(index).marks) {
+        for (int mark : Deanery.studentsList.get(index).marks) {
             sum += mark;
             counter++;
         }
         return (float) (sum / counter);
     }
 
-    int findStudent(int id) {
+    static float getAverageMark(Student student) {
+
+        int sum = 0;
+        int counter = 0;
+        for (int mark : student.marks) {
+            sum += mark;
+            counter++;
+        }
+        return (float) (sum / counter);
+    }
+
+    static int findStudent(int id) {
         try {
-            for (Student student : studentsList) {
+            for (Student student : Deanery.studentsList) {
                 if (student.id == id) {
-                    return studentsList.indexOf(student);
+                    return Deanery.studentsList.indexOf(student);
                 }
             }
         } catch (Exception ex) {
