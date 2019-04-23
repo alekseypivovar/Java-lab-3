@@ -35,6 +35,8 @@ public class Student {
         return this.group;
     }
 
+    ArrayList<Integer> getMarks() {return this.marks;}
+
     static void addMark(int id, int mark) {
         int index = findStudent(id);
         if (index == -1) {
@@ -53,30 +55,30 @@ public class Student {
             return 0;
         }
 
-        int sum = 0;
+        float sum = 0;
         int counter = 0;
         for (int mark : Deanery.studentsList.get(index).marks) {
             sum += mark;
             counter++;
         }
-        return (float) (sum / counter);
+        return (sum / (float)counter);
     }
 
     static float getAverageMark(Student student) {
 
-        int sum = 0;
+        float sum = 0;
         int counter = 0;
         for (int mark : student.marks) {
             sum += mark;
             counter++;
         }
-        return (float) (sum / counter);
+        return (sum / (float)counter);
     }
 
     static int findStudent(int id) {
         try {
             for (Student student : Deanery.studentsList) {
-                if (student.id == id) {
+                if (student.getId() == id) {
                     return Deanery.studentsList.indexOf(student);
                 }
             }

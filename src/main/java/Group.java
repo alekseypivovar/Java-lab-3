@@ -18,12 +18,9 @@ public class Group {
         Deanery.groupList.add(new Group(groupName));
     }
 
-    void addStudent(int id) {
-        int index = Student.findStudent(id);          // Find student 'in global scope' tak skazyat'
-        if (index != (-1)) {
-            studentsInGroup.add(Deanery.studentsList.get(index));
-        }
-        Deanery.studentsList.get(index).setGroup(this);
+    void addStudent(Student student) {
+        studentsInGroup.add(student);
+        student.setGroup(this);
     }
 
     void setHead(int id) {
@@ -71,7 +68,7 @@ public class Group {
             count++;
             sum += Student.getAverageMark(student);
         }
-        return (float) (sum / count);
+        return (sum / (float)count);
     }
 
     void deleteStudentFromGroup(Student student) {
