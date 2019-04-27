@@ -5,30 +5,11 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-/*
 
-Примерный перечень полей:
-
-    students - массив студентов
-    groups - массив групп
-
-Обеспечить класс следующими методами:
-
-    создание студентов на основе данных из файла
-    создание групп на основе данных из файла
-    добавление случайных оценок студентам
-    накопление статистики по успеваемости студентов и групп
-    перевод студентов из группы в группу
-    отчисление студентов за неуспеваемость
-    сохранение обновленных данных в файлах
-    инициация выборов старост в группах
-    вывод данных на консоль
-
-*/
 public class Deanery {
-    static ArrayList<Student> studentsList = new ArrayList<Student>();
-    static ArrayList<Group> groupList = new ArrayList<Group>();
-    private static int idCounter = 1;
+    public static ArrayList<Student> studentsList = new ArrayList<Student>();
+    public static ArrayList<Group> groupList = new ArrayList<Group>();
+
 
     static void addStudentsFromFile() {
         try {
@@ -40,7 +21,7 @@ public class Deanery {
             JSONObject js = (JSONObject) obj;
             JSONArray items = (JSONArray) js.get("students");
             for (Object i : items) {
-                Student.newStudent(Integer.parseInt(((JSONObject) i).get("id").toString()),(((JSONObject) i).get("fio").toString()));
+                Student.newStudent(Integer.parseInt(((JSONObject) i).get("id").toString()), (((JSONObject) i).get("fio").toString()));
             }
         } catch (
                 FileNotFoundException ex) {
@@ -87,15 +68,10 @@ public class Deanery {
         return (int) (Math.random() * ++max) + min;
     }
 
-    static void changeGroup(int id, Group targetGroup) {
-
-        int index = Student.findStudent(id);
-        if (index != (-1)) {
-            Student student = Deanery.studentsList.get(index);
-            student.getGroup().deleteStudentFromGroup(student);
-            targetGroup.addStudent(id);
-            student.setGroup(targetGroup);
-        }
+    static void changeGroup(Student student, Group targetGroup) {
+        student.getGroup().deleteStudentFromGroup(student);
+        targetGroup.addStudent(student);
+        student.setGroup(targetGroup);
     }
 
     static void sendDownStudent(Student student) {
@@ -109,23 +85,32 @@ public class Deanery {
     }
 
     static void saveInfoToFile() {
+        JSONObject object = new JSONObject();
         JSONArray studentsJSON = new JSONArray();
-        for (Student student:studentsList){
-            studentsJSON.add(student.getId());
-            studentsJSON.add(student.getFio());
-            studentsJSON.add(student.getGroup());
+
+        for (Student student : studentsList) {
+            JSONObject obj = new JSONObject();
+            obj.put("id", student.getId());
+            obj.put("fio", student.getFio());
+            obj.put("group", student.getGroup().getTitle());
+            obj.put("marks", student.getMarks());
+            studentsJSON.add(obj);
         }
 
-        object.put("messages", messages);
-        try (FileWriter writer = new FileWriter(FILENAME)){
+        object.put("students", studentsJSON);
+
+        try {
+            File f = new File("Output.json");
+            FileWriter writer = new FileWriter(f);
             writer.write(object.toJSONString());
             writer.flush();
             writer.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
-        catch (IOException ex) {
-            Logger.getLogger(JsonSimpleExample.class.getName())
-                    .log(Level.SEVERE, null, ex);
-        }
+
     }
 
     static void voteForHeadinGroups() {          // 'Zaglushka'. First member of the each group is beginning to be a head of this group.
@@ -138,7 +123,11 @@ public class Deanery {
         for (Group group : groupList) {
             System.out.println(group.getTitle());
             for (Student student : group.studentsInGroup) {
-                System.out.println(student.getId() + " - " + student.getFio());
+                System.out.println(student.getId() + " - " + student.getFio() + "\nmarks:");
+                for (int mark : student.getMarks()) {
+                    System.out.print(mark + ",");
+                }
+                System.out.println("");
             }
         }
     }

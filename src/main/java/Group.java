@@ -18,12 +18,9 @@ public class Group {
         Deanery.groupList.add(new Group(groupName));
     }
 
-    void addStudent(int id) {
-        int index = Student.findStudent(id);          // Find student 'in global scope' tak skazyat'
-        if (index != (-1)) {
-            studentsInGroup.add(Deanery.studentsList.get(index));
-        }
-        Deanery.studentsList.get(index).setGroup(this);
+    void addStudent(Student student) {
+        studentsInGroup.add(student);
+        student.setGroup(this);
     }
 
     void setHead(int id) {
@@ -31,6 +28,10 @@ public class Group {
         if (index != (-1)) {
             this.head = studentsInGroup.get(index);
         }
+    }
+
+    Student getHead(){
+        return this.head;
     }
 
     // Find by id
@@ -43,9 +44,9 @@ public class Group {
             }
         } catch (Exception ex) {
             System.out.println("Student not found!");
-        } finally {
-            return -1;
         }
+        return -1;
+
     }
 
     // Find by FIO (from the beginning of the string)
@@ -58,9 +59,9 @@ public class Group {
             }
         } catch (Exception ex) {
             System.out.println("Student not found!");
-        } finally {
-            return -1;
         }
+        return -1;
+
     }
 
     float getAverageMark() {
@@ -71,7 +72,7 @@ public class Group {
             count++;
             sum += Student.getAverageMark(student);
         }
-        return (float) (sum / count);
+        return (sum / (float)count);
     }
 
     void deleteStudentFromGroup(Student student) {
