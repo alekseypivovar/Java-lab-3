@@ -7,11 +7,11 @@ import org.json.simple.parser.ParseException;
 
 
 public class Deanery {
-    public static ArrayList<Student> studentsList = new ArrayList<Student>();
-    public static ArrayList<Group> groupList = new ArrayList<Group>();
+    public ArrayList<Student> studentsList = new ArrayList<Student>();
+    public ArrayList<Group> groupList = new ArrayList<Group>();
 
 
-    static void addStudentsFromFile() {
+    void addStudentsFromFile() {
         try {
             File f = new File("Names.json");
             JSONParser parser = new JSONParser();
@@ -21,7 +21,8 @@ public class Deanery {
             JSONObject js = (JSONObject) obj;
             JSONArray items = (JSONArray) js.get("students");
             for (Object i : items) {
-                Student.newStudent(Integer.parseInt(((JSONObject) i).get("id").toString()), (((JSONObject) i).get("fio").toString()));
+                Student.newStudent(Integer.parseInt(((JSONObject) i).get("id").toString()),
+                        (((JSONObject) i).get("fio").toString()), this);
             }
         } catch (
                 FileNotFoundException ex) {
@@ -33,7 +34,7 @@ public class Deanery {
         }
     }
 
-    static void addGroupsFromFile() {
+    void addGroupsFromFile() {
         try {
             File f = new File("Groups.json");
             JSONParser parser = new JSONParser();
@@ -43,7 +44,7 @@ public class Deanery {
             JSONObject js = (JSONObject) obj;
             JSONArray items = (JSONArray) js.get("groups");
             for (Object i : items) {
-                Group.addGroup((((JSONObject) i).get("groupname").toString()));
+                Group.addGroup((((JSONObject) i).get("groupname").toString()), this);
             }
         } catch (
                 FileNotFoundException ex) {
@@ -55,7 +56,7 @@ public class Deanery {
         }
     }
 
-    static void setRandomMarks() {
+    void setRandomMarks() {
         for (Student student : studentsList) {
             for (int i = 0; i < 20; i++) {
                 student.addMark(randomInt(1, 5));
@@ -63,18 +64,18 @@ public class Deanery {
         }
     }
 
-    static int randomInt(int min, int max) {
+    int randomInt(int min, int max) {
         max -= min;
         return (int) (Math.random() * ++max) + min;
     }
 
-    static void changeGroup(Student student, Group targetGroup) {
+    void changeGroup(Student student, Group targetGroup) {
         student.getGroup().deleteStudentFromGroup(student);
         targetGroup.addStudent(student);
         student.setGroup(targetGroup);
     }
 
-    static void sendDownStudent(Student student) {
+    void sendDownStudent(Student student) {
         if (Student.getAverageMark(student) <= 2.50) {
             studentsList.remove(student);
             student.getGroup().deleteStudentFromGroup(student);
@@ -84,7 +85,7 @@ public class Deanery {
         }
     }
 
-    static void saveInfoToFile() {
+    void saveInfoToFile() {
         JSONObject object = new JSONObject();
         JSONArray studentsJSON = new JSONArray();
 
@@ -113,13 +114,13 @@ public class Deanery {
 
     }
 
-    static void voteForHeadinGroups() {          // 'Zaglushka'. First member of the each group is beginning to be a head of this group.
+    void voteForHeadinGroups() {          // 'Zaglushka'. First member of the each group is beginning to be a head of this group.
         for (Group group : groupList) {
             group.setHead(group.studentsInGroup.get(0).getId());
         }
     }
 
-    static void printAllInfo() {
+    void printAllInfo() {
         for (Group group : groupList) {
             System.out.println(group.getTitle());
             for (Student student : group.studentsInGroup) {

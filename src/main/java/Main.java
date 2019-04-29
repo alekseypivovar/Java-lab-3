@@ -1,33 +1,33 @@
 public class Main {
-    public static void main(String args[]){
+    public static void main(String args[]) {
         Deanery dekanat = new Deanery();
-    Deanery.addStudentsFromFile();
-    Deanery.addGroupsFromFile();
+        dekanat.addStudentsFromFile();
+        dekanat.addGroupsFromFile();
 
-    for (Student student:Deanery.studentsList){
-        int groupNumber=Deanery.randomInt(0,2);
-        Deanery.groupList.get(groupNumber).addStudent(student);
-    }
+        for (Student student : dekanat.studentsList) {
+            int groupNumber = dekanat.randomInt(0, 2);
+            dekanat.groupList.get(groupNumber).addStudent(student);
+        }
 
-    Deanery.setRandomMarks();
-    Deanery.printAllInfo();
+        dekanat.setRandomMarks();
+        dekanat.printAllInfo();
 
-    Deanery.voteForHeadinGroups();
+        dekanat.voteForHeadinGroups();
 
-    for (int i=0;i<20;i++){
-        Deanery.studentsList.get(0).addMark(1);
-    }
+        for (int i = 0; i < 20; i++) {
+            dekanat.studentsList.get(0).addMark(1);
+        }
 
-    Deanery.sendDownStudent(Deanery.studentsList.get(0));
-    Deanery.printAllInfo();
+        dekanat.sendDownStudent(dekanat.studentsList.get(0));
+        dekanat.printAllInfo();
 
-    Group.addGroup("NewTestGroup");
-    Deanery.changeGroup(Deanery.studentsList.get(0),Deanery.groupList.get(3));
-    Deanery.printAllInfo();
+        Group.addGroup("NewTestGroup", dekanat);
+        dekanat.changeGroup(dekanat.studentsList.get(0), dekanat.groupList.get(3));
+        dekanat.printAllInfo();
 
-    System.out.println(Deanery.groupList.get(3).getAverageMark());
+        System.out.println(dekanat.groupList.get(3).getAverageMark());
 
-    Deanery.saveInfoToFile();
+        dekanat.saveInfoToFile();
 
 
     }

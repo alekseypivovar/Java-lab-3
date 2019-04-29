@@ -48,12 +48,12 @@ public class StudentTest {
     @org.junit.Test
     public void findStudent() {
         Deanery dekanat = new Deanery();
-        Student.newStudent(123, "Test name1");
-        Student.newStudent(124, "Test name2");
-        Student.newStudent(125, "Test name3");
+        Student.newStudent(123, "Test name1", dekanat);
+        Student.newStudent(124, "Test name2", dekanat);
+        Student.newStudent(125, "Test name3", dekanat);
 
-        assertEquals(-1,Student.findStudent(126));
-        assertEquals(1,Student.findStudent(124));
+        assertEquals(-1,Student.findStudent(126, dekanat));
+        assertEquals(1,Student.findStudent(124, dekanat));
 
     }
 }

@@ -15,8 +15,8 @@ public class Student {
         this.fio = fio;
     }
 
-    static void newStudent(int id, String fio) {
-        Deanery.studentsList.add(new Student(id, fio));
+    static void newStudent(int id, String fio, Deanery deanery) {
+        deanery.studentsList.add(new Student(id, fio));
     }
 
     void setGroup(Group group) {
@@ -37,27 +37,27 @@ public class Student {
 
     ArrayList<Integer> getMarks() {return this.marks;}
 
-    static void addMark(int id, int mark) {
-        int index = findStudent(id);
+    static void addMark(int id, int mark, Deanery deanery) {
+        int index = findStudent(id, deanery);
         if (index == -1) {
             return;
         }
-        Deanery.studentsList.get(index).marks.add(mark);
+        deanery.studentsList.get(index).marks.add(mark);
     }
 
     void addMark(int mark){
         this.marks.add(mark);
     }
 
-    static float getAverageMark(int id) {
-        int index = findStudent(id);
+    static float getAverageMark(int id, Deanery deanery) {
+        int index = findStudent(id, deanery);
         if (index == -1) {
             return 0;
         }
 
         float sum = 0;
         int counter = 0;
-        for (int mark : Deanery.studentsList.get(index).marks) {
+        for (int mark : deanery.studentsList.get(index).marks) {
             sum += mark;
             counter++;
         }
@@ -75,11 +75,11 @@ public class Student {
         return (sum / (float)counter);
     }
 
-    static int findStudent(int id) {
+    static int findStudent(int id, Deanery deanery) {
         try {
-            for (Student student : Deanery.studentsList) {
+            for (Student student : deanery.studentsList) {
                 if (student.getId() == id) {
-                    return Deanery.studentsList.indexOf(student);
+                    return deanery.studentsList.indexOf(student);
                 }
             }
         } catch (Exception ex) {

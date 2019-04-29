@@ -1,56 +1,62 @@
-import org.junit.Test;
+import org.junit.After;
+
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 public class GroupTest {
 
-    @Test
+    @org.junit.Test
     public void getTitle() {
-        Group.addGroup("testTitle");
-        assertEquals("testTitle", Deanery.groupList.get(0).getTitle());
+        Deanery dekanat=new Deanery();
+        Group.addGroup("testTitle", dekanat);
+        assertEquals("testTitle", dekanat.groupList.get(0).getTitle());
     }
 
-    @Test
+    @org.junit.Test
     public void addStudent() {
-        Group.addGroup("testGroup");
-        Student.newStudent(123, "testName");
-        Deanery.groupList.get(0).addStudent(Deanery.studentsList.get(0));
-        assertEquals("testName", Deanery.groupList.get(0).studentsInGroup.get(0).getFio());
+        Deanery dekanat=new Deanery();
+        Group.addGroup("testGroup", dekanat);
+        Student.newStudent(123, "testName",dekanat);
+        dekanat.groupList.get(0).addStudent(dekanat.studentsList.get(0));
+        assertEquals("testName", dekanat.groupList.get(0).studentsInGroup.get(0).getFio());
     }
 
-    @Test
+    @org.junit.Test
     public void setHead() {
-        Group.addGroup("testGroup");
-        Student.newStudent(1, "I am the head");
-        Student.newStudent(2, "I am not a head");
-        Deanery.groupList.get(0).addStudent(Deanery.studentsList.get(0));
-        Deanery.groupList.get(0).addStudent(Deanery.studentsList.get(1));
-        Deanery.groupList.get(0).setHead(1);
-        assertEquals(1, Deanery.groupList.get(0).getHead().getId());
+        Deanery dekanat=new Deanery();
+        Group.addGroup("testGroup",dekanat);
+        Student.newStudent(1, "I am the head",dekanat);
+        Student.newStudent(2, "I am not a head",dekanat);
+        dekanat.groupList.get(0).addStudent(dekanat.studentsList.get(0));
+        dekanat.groupList.get(0).addStudent(dekanat.studentsList.get(1));
+        dekanat.groupList.get(0).setHead(1);
+        assertEquals(1, dekanat.groupList.get(0).getHead().getId());
     }
 
-    @Test
+    @org.junit.Test
     public void findStudent() {
-        Group.addGroup("testGroup");
-        Student.newStudent(123, "Petrov");
-        Student.newStudent(124, "Sidorov");
-        Deanery.groupList.get(0).addStudent(Deanery.studentsList.get(0));
-        Deanery.groupList.get(0).addStudent(Deanery.studentsList.get(1));
-        assertEquals(1, Deanery.groupList.get(0).findStudent(124));
-        assertEquals(-1, Deanery.groupList.get(0).findStudent(999));
+        Deanery dekanat=new Deanery();
+        Group.addGroup("testGroup",dekanat);
+        Student.newStudent(123, "Petrov",dekanat);
+        Student.newStudent(124, "Sidorov",dekanat);
+        dekanat.groupList.get(0).addStudent(dekanat.studentsList.get(0));
+        dekanat.groupList.get(0).addStudent(dekanat.studentsList.get(1));
+        assertEquals(1, dekanat.groupList.get(0).findStudent(124));
+        assertEquals(-1, dekanat.groupList.get(0).findStudent(999));
 
     }
 
-    @Test
+    @org.junit.Test
     public void findStudent1() {
-        Group.addGroup("testGroup");
-        Student.newStudent(123, "Petrov");
-        Student.newStudent(124, "Sidorov");
-        Deanery.groupList.get(0).addStudent(Deanery.studentsList.get(0));
-        Deanery.groupList.get(0).addStudent(Deanery.studentsList.get(1));
-        assertEquals(1, Deanery.groupList.get(0).findStudent("Sidor"));
-        assertEquals(-1, Deanery.groupList.get(0).findStudent("ksdfjsdhf"));
+        Deanery dekanat=new Deanery();
+        Group.addGroup("testGroup",dekanat);
+        Student.newStudent(123, "Petrov",dekanat);
+        Student.newStudent(124, "Sidorov",dekanat);
+        dekanat.groupList.get(0).addStudent(dekanat.studentsList.get(0));
+        dekanat.groupList.get(0).addStudent(dekanat.studentsList.get(1));
+        assertEquals(1, dekanat.groupList.get(0).findStudent("Sidor"));
+        assertEquals(-1, dekanat.groupList.get(0).findStudent("ksdfjsdhf"));
     }
 
 }

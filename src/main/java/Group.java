@@ -14,8 +14,8 @@ public class Group {
         return this.title;
     }
 
-    static void addGroup(String groupName)    {
-        Deanery.groupList.add(new Group(groupName));
+    static void addGroup(String groupName, Deanery deanery)    {
+        deanery.groupList.add(new Group(groupName));
     }
 
     void addStudent(Student student) {
